@@ -15,6 +15,7 @@ body {
   background: var(--figma-color-bg);
   padding: 16px;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .app-container {
@@ -134,17 +135,22 @@ body {
   padding: 12px;
   background: var(--figma-color-bg-secondary);
   border-radius: 4px;
+  gap: 8px;
+  min-width: 0;
 }
 
 .result-label {
   font-size: 12px;
   font-weight: 500;
   color: var(--figma-color-text);
+  flex-shrink: 1;
+  min-width: 0;
 }
 
 .result-badges {
   display: flex;
   gap: 8px;
+  flex-shrink: 0;
 }
 
 .badge {
@@ -164,5 +170,29 @@ body {
 .badge.fail {
   background: #dc2626;
   color: white;
+}
+
+.footer-helper {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-top: 16px;
+  border-top: 1px solid var(--figma-color-border);
+  margin-top: 8px;
+}
+
+.helper-text {
+  font-size: 10px;
+  color: var(--figma-color-text-secondary);
+  line-height: 1.4;
+  padding-left: 12px;
+  position: relative;
+}
+
+.helper-text::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: var(--figma-color-text-secondary);
 }
 

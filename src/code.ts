@@ -1,7 +1,7 @@
 // This plugin checks color contrast for accessibility
 
 figma.showUI(__html__, {
-  width: 320,
+  width: 380,
   height: 600,
   themeColors: true
 });

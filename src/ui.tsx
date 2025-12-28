@@ -27,15 +27,39 @@ function ColorInput({ label, color, onChange, onPickFromCanvas }: ColorInputProp
   }, [color]);
 
   const handleHexChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setHexValue(value);
-    if (/^#[0-9A-Fa-f]{6}$/.test(value)) {
-      onChange(value);
+    let value = e.target.value;
+    
+    // Remove any existing # to avoid duplicates
+    value = value.replace(/^#+/, '');
+    
+    // Limit to 6 hex characters
+    value = value.replace(/[^0-9A-Fa-f]/g, '').slice(0, 6);
+    
+    // Add # prefix
+    const formattedValue = value.length > 0 ? '#' + value : '#';
+    
+    setHexValue(formattedValue);
+    
+    // If we have 6 hex digits, update the color
+    if (value.length === 6 && /^[0-9A-Fa-f]{6}$/i.test(value)) {
+      onChange('#' + value.toUpperCase());
     }
   };
 
   const handleBlur = () => {
-    if (!/^#[0-9A-Fa-f]{6}$/.test(hexValue)) {
+    // Remove # to check the hex part
+    const hexPart = hexValue.replace(/^#+/, '');
+    
+    // If we have exactly 6 valid hex characters, format and use it
+    if (hexPart.length === 6 && /^[0-9A-Fa-f]{6}$/i.test(hexPart)) {
+      const formatted = '#' + hexPart.toUpperCase();
+      setHexValue(formatted);
+      onChange(formatted);
+    } else if (hexPart.length > 0 && hexPart.length < 6) {
+      // If partially entered but invalid, revert to current color
+      setHexValue(color);
+    } else if (hexValue === '#' || hexValue === '') {
+      // If empty, revert to current color
       setHexValue(color);
     }
   };
@@ -180,6 +204,12 @@ function App() {
           aaThreshold={3}
           showAAA={false}
         />
+      </div>
+
+      <div className="footer-helper">
+        <div className="helper-text">Normal text: Small body text (below 18pt regular or 14pt bold)</div>
+        <div className="helper-text">Large text: Headings and large labels</div>
+        <div className="helper-text">UI components and graphics: Icons, buttons, inputs, strokes</div>
       </div>
     </div>
   );
